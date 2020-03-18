@@ -62,18 +62,22 @@ In classic clusters, bringing your own Ingress controller is supported only for 
 
 3. Define a load balancer service to expose your custom Ingress deployment.
     ```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: ingress-nginx
-    spec:
-      type: LoadBalancer
-      selector:
-        app: ingress-nginx
-      ports:
-       - protocol: TCP
-         port: 80
-      externalTrafficPolicy: Cluster
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: ingress-nginx
+   spec:
+     type: LoadBalancer
+     selector:
+       app: ingress-nginx
+     ports:
+      - name: http
+        protocol: TCP
+        port: 80
+      - name: https
+        protocol: TCP
+        port: 443
+     externalTrafficPolicy: Local
     ```
     {: codeblock}
 
@@ -85,7 +89,7 @@ In classic clusters, bringing your own Ingress controller is supported only for 
 
 5. Get the **EXTERNAL-IP** address for the load balancer.
     ```
-    kubectl get svc my-lb-svc -n kube-system
+    kubectl get svc ingress-nginx -n kube-system
     ```
     {: pre}
 
